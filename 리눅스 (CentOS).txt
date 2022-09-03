@@ -116,6 +116,12 @@ shift
 
 
 
+	네트워크 서버
+
+텔넷 서버
+
+OpenSSH 서버
+
 
 ================================================================================
 
@@ -1138,11 +1144,41 @@ $9까지는 잘 출력되지만, $10부터는 $1 + "0" 이런 형태가 되어�
 
 ------------------------------------------------------------------------------------
 
+텔넷 서버
+
+오래된 원격 접속 방법.
+보안에 취약하기 때문에 요즘에는 보안 기능을 더해서 사용.
+
+ - 방법 기초과정
+
+1. 텔넷 서버 설치		yum install telnet-server
+2. 텔넷 서비스 시작	systemctl start telnet.socket
+3. 텔넷 전용 사용자 생성	adduser 사용자이름	passwd 비밀번호
+4. 방화벽 설정(포트열기)	firewall-config
+5. 텔넷 서비스 상시 가동	systemctl enable telnet.socket
+6. 클라이언트에서 접속	telnet 서버 IP
 
 
-네트워크 서버
+
+ - 방화벽 설정 (텍스트모드)
+
+firewall-cmd--permanent --add-service=telnet		영구적 텔넷 허용
+firewall-cmd--permanent --add-port=23/tcp		영구적 23번 tcp 포트 허용
+
+* 영구허용이 싫으명 --permanent를 빼면 된다.
+* 방화벽을 설정하고 firewall-cmd --reload 하면 방화벽 재로딩되면서 적용된다.
+
+ - 서버 재부팅후에도 텔넷 서버 가동
+systemctl enable telnet.socket
 
 
+
+*** CentOS는 기본적으로 telnet을 통한 root 계정 접속을 허용 x
+꼭 허용하고 싶다면 mv /etc/securetty /etc/securetty.bak 등을 입력하여 /etc/securetty 파일을 다른 이름으로 바꾸어 적용해제한다.
+
+----------------------------------------------------------------------------
+
+OpenSSH 서버
 
 
 
